@@ -396,7 +396,8 @@
               </div>
               <div>
                 <p class="text-xs text-gray-400 font-medium tracking-wide uppercase mb-0.5">Teléfono</p>
-                <a href="tel:+5493564416692" class="text-gray-700 font-medium hover:text-gold transition-colors duration-200">+549 3564 416692</a>
+                <a href="tel:+5493564416691" class="block text-gray-700 font-medium hover:text-gold transition-colors duration-200">+549 3564 416691</a>
+                <a href="tel:+5493564416692" class="block text-gray-700 font-medium hover:text-gold transition-colors duration-200">+549 3564 416692</a>
               </div>
             </div>
 
@@ -406,7 +407,8 @@
               </div>
               <div>
                 <p class="text-xs text-gray-400 font-medium tracking-wide uppercase mb-0.5">Email</p>
-                <a href="mailto:german.duchisa@gmail.com" class="text-gray-700 font-medium hover:text-gold transition-colors duration-200">german.duchisa@gmail.com</a>
+                <a href="mailto:raul.duchisa@gmail.com" class="block text-gray-700 font-medium hover:text-gold transition-colors duration-200">raul.duchisa@gmail.com</a>
+                <a href="mailto:german.duchisa@gmail.com" class="block text-gray-700 font-medium hover:text-gold transition-colors duration-200">german.duchisa@gmail.com</a>
               </div>
             </div>
 
@@ -424,24 +426,24 @@
 
         <!-- Form -->
         <div class="reveal" style="transition-delay:.1s">
-          <form class="bg-white rounded-xl p-8" style="box-shadow: 0 8px 32px rgba(0,0,0,.07), 0 2px 8px rgba(212,148,10,.06);">
+          <form id="contact-form" class="bg-white rounded-xl p-8" style="box-shadow: 0 8px 32px rgba(0,0,0,.07), 0 2px 8px rgba(212,148,10,.06);">
             <div class="grid sm:grid-cols-2 gap-5 mb-5">
               <div>
                 <label class="block text-xs font-semibold text-gray-600 tracking-wide mb-2">Nombre</label>
-                <input type="text" placeholder="Tu nombre" class="w-full border border-gray-200 rounded px-4 py-3 text-sm text-gray-700 placeholder-gray-400 outline-none transition-shadow duration-200 focus:border-gold focus:ring-2 focus:ring-gold/20" />
+                <input type="text" name="nombre" id="nombre" required placeholder="Tu nombre" class="w-full border border-gray-200 rounded px-4 py-3 text-sm text-gray-700 placeholder-gray-400 outline-none transition-shadow duration-200 focus:border-gold focus:ring-2 focus:ring-gold/20" />
               </div>
               <div>
                 <label class="block text-xs font-semibold text-gray-600 tracking-wide mb-2">Empresa / Establecimiento</label>
-                <input type="text" placeholder="Nombre de tu empresa" class="w-full border border-gray-200 rounded px-4 py-3 text-sm text-gray-700 placeholder-gray-400 outline-none transition-shadow duration-200 focus:border-gold focus:ring-2 focus:ring-gold/20" />
+                <input type="text" name="empresa" id="empresa" placeholder="Nombre de tu empresa" class="w-full border border-gray-200 rounded px-4 py-3 text-sm text-gray-700 placeholder-gray-400 outline-none transition-shadow duration-200 focus:border-gold focus:ring-2 focus:ring-gold/20" />
               </div>
             </div>
             <div class="mb-5">
               <label class="block text-xs font-semibold text-gray-600 tracking-wide mb-2">Email</label>
-              <input type="email" placeholder="tu@email.com" class="w-full border border-gray-200 rounded px-4 py-3 text-sm text-gray-700 placeholder-gray-400 outline-none transition-shadow duration-200 focus:border-gold focus:ring-2 focus:ring-gold/20" />
+              <input type="email" name="email" id="email" required placeholder="tu@email.com" class="w-full border border-gray-200 rounded px-4 py-3 text-sm text-gray-700 placeholder-gray-400 outline-none transition-shadow duration-200 focus:border-gold focus:ring-2 focus:ring-gold/20" />
             </div>
             <div class="mb-5">
               <label class="block text-xs font-semibold text-gray-600 tracking-wide mb-2">¿En qué podemos ayudarte?</label>
-              <select class="w-full border border-gray-200 rounded px-4 py-3 text-sm text-gray-500 outline-none transition-shadow duration-200 focus:border-gold focus:ring-2 focus:ring-gold/20 bg-white">
+              <select name="motivo" id="motivo" class="w-full border border-gray-200 rounded px-4 py-3 text-sm text-gray-500 outline-none transition-shadow duration-200 focus:border-gold focus:ring-2 focus:ring-gold/20 bg-white">
                 <option value="">Seleccioná una opción</option>
                 <option>Comercialización de granos</option>
                 <option>Provisión de agroquímicos</option>
@@ -451,11 +453,14 @@
             </div>
             <div class="mb-7">
               <label class="block text-xs font-semibold text-gray-600 tracking-wide mb-2">Mensaje</label>
-              <textarea rows="4" placeholder="Contanos sobre tu consulta..." class="w-full border border-gray-200 rounded px-4 py-3 text-sm text-gray-700 placeholder-gray-400 outline-none transition-shadow duration-200 focus:border-gold focus:ring-2 focus:ring-gold/20 resize-none"></textarea>
+              <textarea rows="4" name="mensaje" id="mensaje" required placeholder="Contanos sobre tu consulta..." class="w-full border border-gray-200 rounded px-4 py-3 text-sm text-gray-700 placeholder-gray-400 outline-none transition-shadow duration-200 focus:border-gold focus:ring-2 focus:ring-gold/20 resize-none"></textarea>
             </div>
+            <input type="hidden" name="subject" value="Nueva consulta de {{ nombre }} - Web DUCHI" />
+            <input type="text" name="_gotcha" id="_gotcha" autocomplete="off" tabindex="-1" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;" />
             <button type="submit" class="btn-gold w-full text-white font-semibold py-3.5 rounded text-sm tracking-wide">
               Enviar consulta
             </button>
+            <p id="form-status" class="text-sm mt-4 hidden"></p>
           </form>
         </div>
 
@@ -519,6 +524,52 @@
     setTimeout(() => {
       revealEls.forEach(el => el.classList.add('visible'));
     }, 300);
+
+    // Contact form submission
+    const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xbdewbja';
+
+    const contactForm = document.getElementById('contact-form');
+    const formStatus = document.getElementById('form-status');
+
+    if (contactForm) {
+      contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (contactForm._gotcha.value) return; // submission de bot, se ignora
+
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando...';
+        formStatus.classList.add('hidden');
+
+        try {
+          const res = await fetch(FORMSPREE_ENDPOINT, {
+            method: 'POST',
+            headers: { Accept: 'application/json' },
+            body: new FormData(contactForm),
+          });
+
+          formStatus.classList.remove('hidden');
+          if (res.ok) {
+            formStatus.textContent = '¡Gracias! Tu consulta fue enviada, te vamos a contactar a la brevedad.';
+            formStatus.className = 'text-sm mt-4 font-medium text-green-600';
+            contactForm.reset();
+          } else {
+            formStatus.textContent = 'No se pudo enviar la consulta. Intentá nuevamente.';
+            formStatus.className = 'text-sm mt-4 font-medium text-red-600';
+          }
+        } catch (err) {
+          formStatus.classList.remove('hidden');
+          formStatus.textContent = 'No se pudo conectar con el servidor. Intentá nuevamente más tarde.';
+          formStatus.className = 'text-sm mt-4 font-medium text-red-600';
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      });
+    }
   </script>
 </body>
 </html>
